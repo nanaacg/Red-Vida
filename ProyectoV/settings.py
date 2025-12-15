@@ -77,15 +77,29 @@ WSGI_APPLICATION = 'ProyectoV.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'conecta_vida',
-        'USER': 'root',
-        'HOST': 'localhost',
-        'PASSWORD': 'admin',
+# ==========================
+# DATABASE: Local MySQL / Render SQLite
+# ==========================
+USE_SQLITE = os.getenv("USE_SQLITE", "0") == "1"
+
+if USE_SQLITE:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "conecta_vida",
+            "USER": "root",
+            "PASSWORD": "admin",
+            "HOST": "127.0.0.1",
+            "PORT": "3306",
+        }
+    }
 
 
 # Password validation
