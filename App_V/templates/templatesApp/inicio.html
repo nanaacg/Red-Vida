@@ -1,0 +1,54 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Inicio - Red de Vida{% endblock %}
+
+{% block content %}
+
+
+<section class="hero" style="text-align:center; padding:60px 20px; background:#fff6f6;">
+    <h1 style="color:#1a1a1a; font-size:2.5rem;">Red de Vida</h1>
+    <p style="color:#555; max-width:600px; margin:15px auto 25px; line-height:1.5;">
+        Brindamos apoyo emocional y psicológico a personas que enfrentan situaciones difíciles. 
+        No estás solo. Estamos aquí para ayudarte.
+    </p>
+
+    <div style="display:flex; justify-content:center; gap:20px;">
+        <button style="background-color:#d62828; color:white; border:none; padding:12px 25px; border-radius:8px; cursor:pointer; font-size:1rem;">Necesito Ayuda Ahora</button>
+        <button style="border:2px solid #e14747ff; color:#d62828; padding:10px 25px; border-radius:8px; background:white; font-size:1rem;">Explorar Recursos</button>
+    </div>
+
+    <p style="margin-top:30px; color:#444; background:#fff0cc; display:inline-block; padding:10px 15px; border-radius:8px;">
+        ☎ En caso de emergencia, llama al <b>131 (SAMU)</b> o <b>133 (Carabineros)</b>.
+    </p>
+</section>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; padding:50px 40px;">
+    <div style="background-color:#fff; padding:25px; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.08); border-top:5px solid #d62828;">
+        <h3>Apoyo Confidencial</h3>
+        <p>Tu privacidad es nuestra prioridad. Espacio seguro y confidencial para expresar tus sentimientos.</p>
+    </div>
+    <div style="background-color:#fff; padding:25px; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.08); border-top:5px solid #0077b6;">
+        <h3>Disponible 24/7</h3>
+        <p>Líneas de ayuda y recursos disponibles en cualquier momento que los necesites.</p>
+    </div>
+    <div style="background-color:#fff; padding:25px; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.08); border-top:5px solid #2a9d8f;">
+        <h3>Profesionales Capacitados</h3>
+        <p>Equipo entrenado para brindar apoyo emocional efectivo y empático.</p>
+    </div>
+</section>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; padding:0 40px 50px;">
+    <div style="background-color:#fff; padding:25px; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.08); border-top:5px solid #d62828;">
+        <h3>Líneas de Ayuda</h3>
+        <p>Accede a contactos de emergencia y líneas de apoyo disponibles en Chile.</p>
+    </div>
+    <div style="background-color:#fff; padding:25px; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.08); border-top:5px solid #0077b6;">
+        <h3>Recursos de Apoyo</h3>
+        <p>Encuentra artículos, guías y ejercicios para manejar momentos difíciles.</p>
+    </div>
+</section>
+
+<section style="background:#fff6f6; text-align:center; padding:20px;">
+    <p><b>Nuestra Misión:</b> Red de Vida busca prevenir situaciones de crisis y ofrecer apoyo inmediato a personas vulnerables.  
+    Trabajamos con profesionales y organizaciones para brindar contención y esperanza.</p>
+</section>
+{% endblock %}

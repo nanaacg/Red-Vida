@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Red de Vida{% endblock %}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #fffdfd; }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo { font-weight: bold; color: #d62828; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+
+        nav a:hover { color: #d62828; }
+
+        .btn-login {
+            background-color: #d62828;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .btn-login:hover { background-color: #a31616; }
+
+        .btn-logout {
+            background-color: #444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .btn-logout:hover { background-color: #222; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">❤️ Red de Vida</div>
+
+        <nav>
+
+            <a href="{% url 'inicio' %}">Inicio</a>
+            <a href="{% url 'lineas_ayuda' %}">Ayuda Inmediata</a>
+
+            {# --- RECURSOS: Solo profesionales o admin pueden agregar --- #}
+            {% if request.session.usuario_id %}
+                <a href="{% url 'recursos' %}">Recursos</a>
+            {% endif %}
+
+
+            {# --- Contactos (Profesionales registrados) --- #}
+            {% if request.session.rol == "profesional" or request.session.rol == "admin" %}
+                <a href="{% url 'contactos' %}">Contactos</a>
+            {% endif %}
+
+            {# --- Solicitudes: Usuario crea, profesional/admin gestiona --- #}
+            {% if request.session.usuario_id %}
+                <a href="{% url 'solicitudes' %}">Solicitudes</a>
+            {% endif %}
+
+            {# --- Mi cuenta solo si hay sesión --- #}
+            {% if request.session.usuario_id %}
+                <a href="{% url 'perfil_usuario' %}">Mi cuenta</a>
+            {% endif %}
+        </nav>
+
+        {# --- Botón LOGIN / LOGOUT --- #}
+        {% if request.session.usuario_id %}
+            <a href="{% url 'logout' %}" class="btn-logout">Cerrar Sesión</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn-login">Iniciar Sesión</a>
+        {% endif %}
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer style="background:#fff6f6; text-align:center; padding:15px; color:#555; font-size:0.9rem;">
+        <p>© 2025 Red de Vida — Plataforma Digital de Apoyo Emocional</p>
+    </footer>
+</body>
+</html>

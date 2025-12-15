@@ -1,0 +1,125 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Registro - Red de Vida{% endblock %}
+
+{% block content %}
+<section style="display:flex; justify-content:center; align-items:center; height:90vh; background:#fff6f6;">
+    <div style="background:white; padding:40px; border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,0.1); width:100%; max-width:450px; text-align:center;">
+        
+        <h2 style="color:#d62828; margin-bottom:25px;">Crear Cuenta</h2>
+
+        <!-- MENSAJES (éxito o error) -->
+        {% if messages %}
+            {% for message in messages %}
+                <div style="
+                    padding:10px 12px;
+                    border-radius:8px;
+                    margin-bottom:15px;
+                    font-weight:600;
+                    font-size:0.95rem;
+                    text-align:center;
+                    {% if message.tags == 'success' %}
+                        background:#2a9d8f; color:white;
+                    {% else %}
+                        background:#d62828; color:white;
+                    {% endif %}
+                ">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <!-- NOMBRE -->
+            <div style="text-align:left; margin-bottom:20px;">
+                <label style="font-weight:600; color:#333;">Nombre</label><br>
+                <input type="text" name="nombre" id="nombre" required
+                        autocomplete="name"
+                        style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; margin-top:5px;">
+
+            </div>
+
+            <!-- CORREO -->
+            <div style="text-align:left; margin-bottom:20px;">
+                <label style="font-weight:600; color:#333;">Correo Electrónico</label><br>
+                <input type="email" name="correo" id="correo" required
+                        autocomplete="email"
+                        style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; margin-top:5px;">
+
+            </div>
+
+            <!-- CONTRASEÑA -->
+            <div style="text-align:left; margin-bottom:20px; position:relative;">
+                <label style="font-weight:600; color:#333;">Contraseña</label><br>
+                <input type="password" name="contraseña" id="contraseña" required
+                        autocomplete="new-password"
+                        style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; margin-top:5px;">
+                <small style="color:#666;">
+                    Mínimo 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 símbolo.
+                </small>
+
+
+                <span onclick="togglePass('contraseña','eye1')" id="eye1"
+                      style="position:absolute; right:14px; top:34px; cursor:pointer;">
+                    <svg width="20" height="20" fill="#888" viewBox="0 0 16 16">
+                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8z"/>
+                        <circle cx="8" cy="8" r="3" fill="white"/>
+                    </svg>
+                </span>
+            </div>
+
+            <!-- CONFIRMAR CONTRASEÑA -->
+            <div style="text-align:left; margin-bottom:20px; position:relative;">
+                <label style="font-weight:600; color:#333;">Confirmar Contraseña</label><br>
+                <input type="password" name="confirmar_contraseña" id="confirmar_contraseña" required
+                       style="width:100%; padding:10px; border:1px solid #ccc; 
+                       border-radius:6px; margin-top:5px;">
+
+                <span onclick="togglePass('confirmar_contraseña','eye2')" id="eye2"
+                      style="position:absolute; right:14px; top:34px; cursor:pointer;">
+                    <svg width="20" height="20" fill="#888" viewBox="0 0 16 16">
+                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8z"/>
+                        <circle cx="8" cy="8" r="3" fill="white"/>
+                    </svg>
+                </span>
+            </div>
+
+            <!-- SELECCIÓN DE ROL -->
+            <div style="text-align:left; margin-bottom:20px;">
+                <label for="rol" style="font-weight:600; color:#333;">Tipo de Cuenta</label><br>
+                <select name="rol" id="rol" required
+                style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; margin-top:5px;">
+
+                    <option value="usuario">Usuario</option>
+                    <option value="profesional">Profesional</option>
+                    <option value="admin">Administrador</option>
+
+                </select>
+            </div>
+
+
+            <button type="submit"
+                style="background-color:#d62828; color:white; border:none; 
+                padding:10px 20px; border-radius:8px; width:100%; font-size:1rem; cursor:pointer;">
+                Registrarme
+            </button>
+        </form>
+
+        <p style="margin-top:20px; color:#555;">¿Ya tienes una cuenta?
+            <a href="{% url 'login' %}" style="color:#d62828; text-decoration:none;">Inicia sesión aquí</a>
+        </p>
+    </div>
+</section>
+
+<script>
+function togglePass(fieldId, eyeId) {
+    let field = document.getElementById(fieldId);
+    let eye = document.getElementById(eyeId);
+
+    field.type = field.type === "password" ? "text" : "password";
+    eye.style.opacity = field.type === "text" ? "0.5" : "1";
+}
+</script>
+
+{% endblock %}

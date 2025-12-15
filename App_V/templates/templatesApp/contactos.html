@@ -1,0 +1,91 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Contactos - Red de Vida{% endblock %}
+{% block content %}
+
+<section style="text-align:center; padding:60px 20px;">
+  <h1 style="color:#d62828;">Profesionales y Contacto</h1>
+  <p style="max-width:700px; margin:10px auto 40px; color:#555;">
+    Si eres un profesional de la salud o deseas ofrecer apoyo voluntario, puedes registrarte aquí.  
+    Tus datos serán visibles para que las personas puedan contactarte.
+  </p>
+
+  {% with rol=request.session.rol %}
+    {% if rol == "profesional" or rol == "admin" %}
+      <!-- FORMULARIO DE REGISTRO -->
+      <div style="max-width:450px; margin:0 auto 60px; background:white; padding:25px; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.1); border-top:6px solid #d62828;">
+        <h2 style="color:#d62828; margin-bottom:20px;">Agregar Profesional</h2>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div style="
+                background:#2a9d8f;
+                color:white;
+                padding:8px 10px;
+                border-radius:8px;
+                margin-bottom:10px;
+                font-size:0.9rem;
+                ">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <form method="POST" style="display:flex; flex-direction:column; gap:12px;">
+          {% csrf_token %}
+          <div>
+            <label style="font-weight:bold; color:#333;">Nombre</label>
+            <input type="text" name="nombre" placeholder="Ej. Ana Torres" required
+                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:8px;">
+          </div>
+
+          <div>
+            <label style="font-weight:bold; color:#333;">Especialidad</label>
+            <input type="text" name="especialidad" placeholder="Psicóloga clínica"
+                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:8px;">
+          </div>
+
+          <div>
+            <label style="font-weight:bold; color:#333;">Correo Electrónico</label>
+            <input type="email" name="correo" placeholder="ejemplo@correo.com" required
+                   style="width:100%; padding:8px; border:1px solid #ccc; border-radius:8px;">
+          </div>
+
+          <div>
+            <label style="font-weight:bold; color:#333;">Teléfono</label>
+            <div style="display:flex; align-items:center;">
+              <span style="background:#f5f5f5; padding:8px 10px; border:1px solid #ccc; border-radius:8px 0 0 8px; color:#555;">+56</span>
+              <input type="text" name="telefono" placeholder="9 1234 5678" 
+                     style="flex:1; padding:8px; border:1px solid #ccc; border-left:none; border-radius:0 8px 8px 0;">
+            </div>
+          </div>
+
+          <button type="submit"
+            style="background:#d62828; color:white; font-weight:bold; border:none; padding:10px; border-radius:8px; cursor:pointer; transition:0.3s;">
+            Registrar Profesional
+          </button>
+        </form>
+      </div>
+
+    {% else %}
+      <p style="max-width:600px; margin:0 auto 40px; color:#777;">
+        Solo cuentas de tipo <strong>profesional</strong> o <strong>administrador</strong> pueden registrar nuevos contactos.
+      </p>
+    {% endif %}
+  {% endwith %}
+
+  <!-- LISTADO DE PROFESIONALES -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; padding:0 30px;">
+    {% for p in profesionales %}
+      <div style="background:white; padding:25px; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.08); border-top:5px solid #d62828; transition:transform 0.3s ease;">
+        <h3 style="color:#d62828;">{{ p.nombre }}</h3>
+        <p style="color:#555;"><strong>Especialidad:</strong> {{ p.especialidad|default:"—" }}</p>
+        <p style="color:#555;"><strong>Correo:</strong> {{ p.correo }}</p>
+        <p style="color:#555;"><strong>Teléfono:</strong> +56 {{ p.telefono }}</p>
+      </div>
+    {% empty %}
+      <p style="color:#777; text-align:center;">Aún no hay profesionales registrados.</p>
+    {% endfor %}
+  </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Eliminar Cuenta - Red de Vida{% endblock %}
+{% block content %}
+<section style="max-width:600px; margin:auto; padding:60px; text-align:center;">
+  <h2 style="color:#d62828;">¿Estás seguro de eliminar tu cuenta?</h2>
+  <p style="color:#555;">Esta acción no se puede deshacer.</p>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" style="background:#d62828; color:white; padding:10px 25px; border:none; border-radius:8px; cursor:pointer;">
+      Sí, eliminar cuenta
+    </button>
+    <a href="{% url 'perfil_usuario' %}" style="margin-left:15px; color:#2a9d8f; text-decoration:none;">Cancelar</a>
+  </form>
+</section>
+{% endblock %}

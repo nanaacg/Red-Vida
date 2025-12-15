@@ -1,0 +1,105 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Solicitudes - Red de Vida{% endblock %}
+{% block content %}
+
+<section style="text-align:center; padding:60px 20px;">
+  <h1 style="color:#d62828;">Gestión de Solicitudes</h1>
+  <p style="max-width:700px; margin:10px auto 40px; color:#555;">
+    Desde aquí puedes registrar nuevas solicitudes de apoyo o revisar las ya existentes.
+  </p>
+
+  <button id="mostrarFormulario" 
+          style="background:#d62828; color:white; border:none; padding:12px 25px; 
+                 border-radius:8px; cursor:pointer; font-weight:bold; margin-bottom:30px;">
+     Nueva solicitud
+  </button>
+
+  <div id="formularioSolicitud" 
+       style="display:none; max-width:700px; margin:0 auto 60px; background:#fff; padding:25px; 
+              border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.08); text-align:left;">
+    <form method="POST" action="{% url 'solicitudes' %}">
+      {% csrf_token %}
+
+      <label style="font-weight:bold;">Descripción:</label>
+      <textarea name="descripcion" rows="3" required 
+                style="width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:6px;"></textarea>
+
+      <label style="font-weight:bold;">Estado:</label>
+      <select name="estado" required 
+              style="width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:6px;">
+        <option value="Pendiente">Pendiente</option>
+        <option value="En proceso">En proceso</option>
+        <option value="Completada">Completada</option>
+      </select>
+
+      <label style="font-weight:bold;">Usuario asociado:</label>
+      <select name="fk_usuario" required 
+              style="width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:6px;">
+        {% for u in usuarios %}
+          <option value="{{ u.id_usuario }}">{{ u.nombre }}</option>
+        {% endfor %}
+      </select>
+
+      <label style="font-weight:bold;">Profesional asignado:</label>
+      <select name="fk_profesional" required 
+              style="width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:6px;">
+        {% for p in profesionales %}
+          <option value="{{ p.id_profesional }}">{{ p.nombre }} - {{ p.especialidad }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" 
+              style="background:#d62828; color:white; border:none; padding:10px 20px; 
+                     border-radius:6px; cursor:pointer; margin-top:15px;">
+        Registrar solicitud
+      </button>
+    </form>
+  </div>
+
+  <!--  Tabla de solicitudes -->
+  <h2 style="color:#d62828; margin-bottom:20px;">Solicitudes Registradas</h2>
+  <div style="overflow-x:auto; max-width:900px; margin:0 auto;">
+    <table style="width:100%; border-collapse:collapse; background:white; box-shadow:0 3px 10px rgba(0,0,0,0.08); border-radius:10px; overflow:hidden;">
+      <thead style="background:#d62828; color:white;">
+        <tr>
+          <th style="padding:12px;">ID</th>
+          <th style="padding:12px;">Descripción</th>
+          <th style="padding:12px;">Estado</th>
+          <th style="padding:12px;">Usuario</th>
+          <th style="padding:12px;">Profesional</th>
+          <th style="padding:12px;">Año</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in solicitudes %}
+          <tr style="text-align:center; border-bottom:1px solid #eee;">
+            <td style="padding:10px;">{{ s.id_solicitud }}</td>
+            <td style="padding:10px;">{{ s.descripcion|truncatewords:10 }}</td>
+            <td style="padding:10px;">{{ s.estado }}</td>
+            <td style="padding:10px;">{{ s.fk_usuario.nombre }}</td>
+            <td style="padding:10px;">{{ s.fk_profesional.nombre }}</td>
+            <td style="padding:10px;">{{ s.fecha }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" style="padding:15px;">No hay solicitudes registradas aún.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+  // Mostrar / ocultar formulario con animación simple
+  document.getElementById("mostrarFormulario").addEventListener("click", function(){
+      const form = document.getElementById("formularioSolicitud");
+      if (form.style.display === "none") {
+          form.style.display = "block";
+          this.textContent = "✖ Cerrar formulario";
+      } else {
+          form.style.display = "none";
+          this.textContent = " Nueva solicitud";
+      }
+  });
+</script>
+
+{% endblock %}

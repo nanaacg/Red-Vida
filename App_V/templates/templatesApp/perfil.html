@@ -1,0 +1,51 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Mi Perfil - Red de Vida{% endblock %}
+{% block content %}
+<section style="max-width:700px; margin:auto; padding:60px;">
+  <h2 style="color:#d62828; text-align:center;">Mi Perfil</h2>
+  
+  {% if messages %}
+  <div style="margin-top:15px; margin-bottom:20px;">
+    {% for message in messages %}
+      <div style="
+        background:#eafff1;
+        color:#0f5132;
+        padding:12px 16px;
+        border-radius:10px;
+        border:1px solid #b7ebc6;
+        margin-bottom:10px;
+        text-align:left;
+      ">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+  
+  <div style="background:white; padding:30px; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.1); margin-top:20px;">
+    <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+    <p><strong>Correo:</strong> {{ usuario.correo }}</p>
+    <p><strong>Contraseña:</strong> ******</p>
+    <div style="margin-top:25px;">
+    <a href="{% url 'editar_usuario' %}" 
+     style="background:#2a9d8f; color:white; padding:10px 20px; border-radius:6px; text-decoration:none;">Editar</a>
+    <a href="{% url 'eliminar_usuario' %}" 
+     style="background:#d62828; color:white; padding:10px 20px; border-radius:6px; text-decoration:none;">Eliminar Cuenta</a>
+     <a href="{% url 'logout' %}"
+    style="
+       display:inline-block;
+       background:#d62828;
+       color:white;
+       padding:10px 20px;
+       border-radius:8px;
+       text-decoration:none;
+       margin-top:20px;
+       font-weight:600;
+   ">
+      Cerrar Sesión
+  </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

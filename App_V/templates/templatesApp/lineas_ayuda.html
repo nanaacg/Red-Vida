@@ -1,0 +1,49 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Ayuda Inmediata{% endblock %}
+{% block content %}
+<section style="padding:60px 20px; text-align:center;">
+  <h1 style="color:#d62828;">Ayuda Inmediata</h1>
+  <p style="max-width:700px; margin:15px auto 40px; color:#444;">
+    Si tú o alguien que conoces necesita apoyo emocional, recuerda que no estás solo. Aquí puedes contactar servicios de ayuda disponibles 24/7.
+  </p>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; max-width:900px; margin:auto;">
+    <div class="ayuda-card">
+      <h3>📞 Salud Responde</h3>
+      <p>Línea gratuita del Ministerio de Salud para orientación emocional.</p>
+      <span class="num">📱 600 360 7777</span>
+    </div>
+    <div class="ayuda-card">
+      <h3>💬 Línea de Prevención del Suicidio</h3>
+      <p>Apoyo psicológico y contención inmediata.</p>
+      <span class="num">☎️ *4141</span>
+    </div>
+    <div class="ayuda-card">
+      <h3>👩‍⚕️ Fono Salud Mental</h3>
+      <p>Atención profesional gratuita y confidencial.</p>
+      <span class="num">📞 600 360 7777 opción 1</span>
+    </div>
+  </div>
+</section>
+
+<style>
+.ayuda-card {
+  background:white;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
+  padding:25px;
+  border-top:4px solid #d62828;
+  transition:transform .3s ease;
+}
+.ayuda-card:hover {
+  transform:translateY(-4px);
+}
+.num {
+  display:block;
+  margin-top:10px;
+  font-weight:bold;
+  color:#d62828;
+  font-size:1.1rem;
+}
+</style>
+{% endblock %}

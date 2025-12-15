@@ -1,0 +1,68 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Iniciar Sesión - Red de Vida{% endblock %}
+
+{% block content %}
+<section style="display:flex; justify-content:center; align-items:center; height:85vh; background:#fff6f6;">
+    <div style="background:white; padding:40px; border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,0.1); width:100%; max-width:400px; text-align:center;">
+
+        <h2 style="color:#d62828; margin-bottom:25px;">Iniciar Sesión</h2>
+
+        <!-- MENSAJES DE LOGIN (correcto o error) -->
+        {% if messages %}
+            {% for message in messages %}
+                <div style="
+                    padding:10px 12px;
+                    border-radius:8px;
+                    margin-bottom:15px;
+                    font-weight:600;
+                    font-size:0.95rem;
+                    text-align:center;
+                    {% if message.tags == 'success' %}
+                        background:#2a9d8f; color:white;
+                    {% else %}
+                        background:#d62828; color:white;
+                    {% endif %}
+                ">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <div style="text-align:left; margin-bottom:20px;">
+                <label style="font-weight:600; color:#333;">Correo Electrónico</label><br>
+                <input type="email" name="correo" id="correo" required
+                        autocomplete="email"
+                        style="width:100%; padding:10px; border:1px solid #ccc; 
+                        border-radius:6px; margin-top:5px;">
+
+            </div>
+
+            <div style="text-align:left; margin-bottom:20px;">
+                <label style="font-weight:600; color:#333;">Contraseña</label><br>
+                <input type="password" name="contraseña" id="contraseña" required
+                        autocomplete="current-password"
+                        style="width:100%; padding:10px; border:1px solid #ccc; 
+                        border-radius:6px; margin-top:5px;">
+
+            </div>
+
+            <button type="submit"
+                style="background-color:#d62828; color:white; border:none; padding:10px 20px;
+                border-radius:8px; width:100%; font-size:1rem; cursor:pointer;">
+                Ingresar
+            </button>
+        </form>
+
+        <p style="margin-top:20px; color:#555;">
+            ¿No tienes una cuenta?
+            <a href="{% url 'registrar' %}" style="color:#d62828; text-decoration:none;">
+                Regístrate aquí
+            </a>
+        </p>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,210 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Recursos - Red de Vida{% endblock %}
+{% block content %}
+
+<section style="text-align:center; padding:60px 20px;">
+  <h1 style="color:#d62828;">Recursos de Apoyo Emocional</h1>
+  <p style="max-width:600px; margin:10px auto 40px; color:#555;">
+    Encuentra artículos, ejercicios y guías que te ayudarán a cuidar tu bienestar emocional.
+  </p>
+
+  <!-- FORMULARIO DE AGREGAR RECURSOS - SOLO ADMIN/PROFESIONAL -->
+  {% if rol == "admin" or rol == "profesional" %}
+  <div style="max-width:450px; margin:0 auto 50px; background:white; padding:25px; border-radius:15px; 
+              box-shadow:0 4px 15px rgba(0,0,0,0.1); border-top:6px solid #d62828;">
+    <h2 style="color:#d62828; margin-bottom:20px;">Agregar Recurso</h2>
+
+    <form method="POST" style="display:flex; flex-direction:column; gap:12px;">
+      {% csrf_token %}
+
+      <div>
+        <label style="font-weight:bold; color:#333;">Título</label>
+        <input type="text" name="titulo" placeholder="Ej. Meditación para principiantes" required
+               style="width:100%; padding:8px; border:1px solid #ccc; border-radius:8px;">
+      </div>
+
+      <div>
+        <label style="font-weight:bold; color:#333;">Descripción</label>
+        <textarea name="descripcion" placeholder="Breve descripción del recurso" rows="3"
+               style="width:100%; padding:8px; border:1px solid #ccc; border-radius:8px;"></textarea>
+      </div>
+
+      <div>
+        <label style="font-weight:bold; color:#333;">Enlace (opcional)</label>
+        <input type="url" name="enlace" placeholder="https://ejemplo.com"
+               style="width:100%; padding:8px; border:1px solid #ccc; border-radius:8px;">
+      </div>
+
+      <div>
+        <label style="font-weight:bold; color:#333;">Categoría</label>
+        <input type="text" name="categoria" placeholder="Ej. Autoayuda, Meditación..."
+               style="width:100%; padding:8px; border:1px solid #ccc; border-radius:8px;">
+      </div>
+
+      <button type="submit"
+        style="background:#d62828; color:white; font-weight:bold; border:none; padding:10px; border-radius:8px; cursor:pointer;">
+        Registrar Recurso
+      </button>
+    </form>
+  </div>
+  {% endif %}
+
+  <!-- BUSCADOR YOUTUBE (API EXTERNA) -->
+  <div style="max-width:650px; margin:0 auto 35px; background:#fff; padding:18px; border-radius:14px;
+              box-shadow:0 4px 15px rgba(0,0,0,0.06); border-left:6px solid #d62828;">
+    <h2 style="margin:0 0 10px; color:#d62828;">Videos de apoyo (YouTube)</h2>
+
+    <form method="GET" action="{% url 'recursos' %}" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <input type="text" name="q" value="{{ youtube_query }}" placeholder="Ej: respiración ansiedad, mindfulness, crisis..."
+             style="flex:1; min-width:240px; padding:10px; border:1px solid #ccc; border-radius:10px;">
+      <button type="submit"
+        style="background:#d62828; color:white; font-weight:bold; border:none; padding:10px 16px; border-radius:10px; cursor:pointer;">
+        Buscar
+      </button>
+    </form>
+
+    
+    {% if rol == "admin" %}
+      <div style="margin-top:10px;">
+    {% if youtube_query %}
+      <a href="{% url 'recursos_youtube_json' %}?q={{ youtube_query|urlencode }}" target="_blank"
+         style="color:#d62828; text-decoration:none; font-weight:bold;">
+        Ver JSON de YouTube 
+      </a>
+    {% else %}
+      <a href="{% url 'recursos_youtube_json' %}?q=salud%20mental" target="_blank"
+         style="color:#d62828; text-decoration:none; font-weight:bold;">
+        Ver JSON de YouTube 
+      </a>
+    {% endif %}
+  </div>
+{% endif %}
+
+
+    {% if youtube_error %}
+      <p style="color:#b00020; margin-top:10px;"><b>{{ youtube_error }}</b></p>
+    {% endif %}
+
+    {% if youtube_videos %}
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:15px; margin-top:18px;">
+        {% for v in youtube_videos %}
+          <div style="border:1px solid #eee; border-radius:12px; overflow:hidden;">
+            {% if v.thumb %}
+              <img src="{{ v.thumb }}" alt="thumb" style="width:100%; display:block;">
+            {% endif %}
+            <div style="padding:12px;">
+              <p style="margin:0; font-weight:bold;">{{ v.titulo }}</p>
+              <small style="color:#666;">{{ v.canal }}</small><br>
+              <a href="{{ v.url }}" target="_blank" style="color:#d62828; text-decoration:none;">
+                Ver en YouTube →
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% elif youtube_query %}
+      <p style="margin-top:14px; color:#666;">No se encontraron videos para: <b>{{ youtube_query }}</b></p>
+    {% endif %}
+  </div>
+
+  <!-- LISTADO DE RECURSOS PARA TODOS -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; padding:0 30px;">
+    {% for r in recursos %}
+      <div class="card">
+        <h3>{{ r.titulo }}</h3>
+        <p>{{ r.descripcion|truncatewords:15 }}</p>
+
+        <button class="leer-mas">Leer más ↓</button>
+
+        <div class="info-extra">
+          <p>{{ r.descripcion }}</p>
+
+          {% if r.enlace %}
+            <a href="{{ r.enlace }}" target="_blank" style="color:#d62828; text-decoration:none;">
+              Ir al recurso externo →
+            </a>
+          {% endif %}
+
+          {% if r.categoria %}
+            <p style="margin-top:10px; color:#666;"><strong>Categoría:</strong> {{ r.categoria }}</p>
+          {% endif %}
+
+          <!-- ✅ Botones solo admin/profesional (no cambia tu diseño) -->
+          {% if rol == "admin" or rol == "profesional" %}
+            <div style="margin-top:12px; display:flex; gap:12px;">
+              <a href="{% url 'recurso_editar' r.id_recurso %}" style="color:#d62828; font-weight:bold;">
+                Editar
+              </a>
+
+              <form method="POST" action="{% url 'recurso_eliminar' r.id_recurso %}">
+                {% csrf_token %}
+                <button type="submit" style="border:none;background:none;color:#b71c1c;font-weight:bold;cursor:pointer;">
+                  Eliminar
+                </button>
+              </form>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <p style="color:#777; text-align:center;">Aún no hay recursos registrados.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+.card {
+  background:white;
+  padding:25px;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+  border-top:5px solid #d62828;
+  transition:transform 0.3s ease;
+  position:relative;
+  text-align:left;
+}
+.card:hover { transform:translateY(-4px); }
+
+.leer-mas {
+  background:none;
+  border:none;
+  color:#d62828;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.info-extra {
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.4s ease;
+  margin-top:10px;
+}
+
+.info-extra.active {
+  max-height:400px;
+}
+
+button[type="submit"]:hover {
+  background:#b71c1c;
+}
+</style>
+
+<script>
+document.querySelectorAll(".leer-mas").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const info=btn.nextElementSibling;
+    const active=info.classList.contains("active");
+
+    document.querySelectorAll(".info-extra").forEach(div=>div.classList.remove("active"));
+    document.querySelectorAll(".leer-mas").forEach(b=>b.textContent="Leer más ↓");
+
+    if(!active){
+      info.classList.add("active");
+      btn.textContent="Ocultar ↑";
+    }
+  });
+});
+</script>
+
+{% endblock %}

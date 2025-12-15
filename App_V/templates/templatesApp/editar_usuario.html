@@ -1,0 +1,45 @@
+{% extends 'templatesApp/base.html' %}
+{% block title %}Editar Perfil - Red de Vida{% endblock %}
+{% block content %}
+<section style="max-width:600px; margin:auto; padding:60px;">
+  <h2 style="color:#d62828; text-align:center;">Editar Perfil</h2>
+  {% if messages %}
+  <div style="margin-bottom:20px;">
+    {% for message in messages %}
+      <div style="
+        background:#ffecec;
+        color:#b00020;
+        padding:12px 15px;
+        border-radius:10px;
+        margin-bottom:10px;
+        border:1px solid #ffb3b3;
+        text-align:left;
+      ">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    <label>Nombre:</label>
+    <input type="text" name="nombre" value="{{ usuario.nombre }}" required style="width:100%; padding:10px; margin-bottom:15px;">
+
+    <label>Correo:</label>  
+    <input type="email" name="correo" value="{{ usuario.correo }}" required style="width:100%; padding:10px; margin-bottom:15px;">
+
+    <label>Nueva Contraseña:</label>
+    <input type="password" name="contraseña" style="width:100%; padding:10px; margin-bottom:15px;">
+    <small style="color:#666;">
+      Mínimo 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 símbolo.
+    </small>
+
+
+    <button type="submit" style="background:#2a9d8f; color:white; padding:10px 25px; border:none; border-radius:8px; cursor:pointer;">
+      Guardar Cambios
+    </button>
+  </form>
+</section>
+{% endblock %}
+
