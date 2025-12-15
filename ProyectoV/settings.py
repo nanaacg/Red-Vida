@@ -24,9 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9$f!zi0n1ap0(p0^84_nn$_v-sm2kv!(+(5xh7@rmzjw33rrii'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ["red-vida.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
