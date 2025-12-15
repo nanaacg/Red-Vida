@@ -41,12 +41,19 @@
       </select>
 
       <label style="font-weight:bold;">Profesional asignado:</label>
+<p>Profesionales cargados: {{ profesionales|length }}</p>
+
       <select name="fk_profesional" required 
-              style="width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:6px;">
+          style="width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:6px;">
+        <option value="">Seleccione un profesional</option>
+
         {% for p in profesionales %}
           <option value="{{ p.id_profesional }}">{{ p.nombre }} - {{ p.especialidad }}</option>
+        {% empty %}
+          <option value="">No hay profesionales registrados</option>
         {% endfor %}
       </select>
+
 
       <button type="submit" 
               style="background:#d62828; color:white; border:none; padding:10px 20px; 

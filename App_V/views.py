@@ -651,22 +651,17 @@ class ProfesionalViewSet(viewsets.ModelViewSet):
 
 
 class RecursoViewSet(viewsets.ModelViewSet):
-    """
-    CRUD completo de recursos vía API.
-    """
     queryset = Recursos.objects.all()
     serializer_class = RecursoSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
+
 class SolicitudViewSet(viewsets.ModelViewSet):
-    """
-    CRUD de solicitudes.
-    Podrías añadir lógica para que el usuario solo vea sus solicitudes, etc.
-    """
     queryset = Solicitudes.objects.all()
     serializer_class = SolicitudSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 def cerrar_sesion(request):
     # Elimina toda la sesión
